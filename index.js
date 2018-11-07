@@ -6,10 +6,11 @@ var fs = require('fs');
 var express = require('express');
 var cookieParser = require('cookie-parser');
 
-
 //APP SETUP
 var app = express();
 app.use(cookieParser());
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 
 //ROUTES
 app.get('/', function (req, res) {
@@ -59,7 +60,9 @@ var server = app.listen(appSettings.SERVER.PORT, function () {
 function login(res, username, pass) {
   return new Promise(function(resolve,reject){
   
-  fs.readFile('serverSecret2.enc', 'utf8', function(err, serverSecretKey) {
+  //this doesnt really do anything and should be used anywhere else
+  //just messing around with cookies and a test secret for when I get to experimenting with jwt signing
+  fs.readFile('serverSecret.enc', 'utf8', function(err, serverSecretKey) {
     if (err) { console.error("error reading app secret"); reject(false);return;}
 
     console.log("Loaded Secret Key %s", serverSecretKey); 
